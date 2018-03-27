@@ -3,6 +3,8 @@ exec tail -n +3 $0
 # This file provides an easy way to add custom menu entries.  Simply type the
 # menu entries you want to add after this comment.  Be careful not to change
 # the 'exec tail' line above.
+insmod search_fs_uuid
+search --no-floppy --set=isopart --fs-uuid beeed1d1-7ac1-4c3f-9e44-308ac561db06
 menuentry ' '{
   true
   }
@@ -11,19 +13,19 @@ menuentry '=== ISO utilities ==='{
   }
 menuentry "Rescatux 0.41B1" --class debian {
   set isofile="/boot/rescatux-0.41b1.iso"
-  loopback loop (hd0,1)$isofile
+  loopback loop ($isopart)$isofile
   linux (loop)/live/vmlinuz1 boot=live findiso=${isofile} components
   initrd (loop)/live/initrd1.img
 }
 menuentry "Kali 2017.1" --class kali {
   set isofile="/boot/kali-linux-2017.1-amd64.iso"
-  loopback loop (hd0,1)$isofile
+  loopback loop ($isopart)$isofile
   linux (loop)/live/vmlinuz-4.9.0-kali3-amd64 boot=live findiso=${isofile} boot=live components splash username=root hostname=kali noswap noautomount
   initrd (loop)/live/initrd.img-4.9.0-kali3-amd64
 }
 menuentry "Tails 3.1" --class debian {
   set isofile="/boot/tails-amd64-3.1.iso"
-  loopback loop (hd0,1)$isofile
+  loopback loop ($isopart)$isofile
   linux (loop)/live/vmlinuz boot=live findiso=${isofile} apparmor=1 security=apparmor nopersistence noprompt block.events_dfl_poll_msecs=1000 noautologin module=Tails kaslr slab_nomerge slub_debug=FZ mce=0 vsycall=none union=aufs quiet_
 # boot=live config fromiso=${isofile} nopersistent noswap noprompt toram=filesystem.squashfs timezone=Etc/UTC block.events_dfl_poll_msecs=1000 noautologin module=Tails quiet 
 # boot=live findiso=${isofile} splash module=Tails components noswap
